@@ -3,408 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PANEL FF DEVELOPER - SIMULASI</title>
-    <meta name="theme-color" content="#00c8ff">
+    <title>PANEL FF - FLOATING LOGO</title>
     <style>
-        * {
+        /* LOGIN Saja Tampil Awal */
+        #login-screen { display: block; }
+        #dev-logo, #main-screen { display: none; }
+
+        /* LOGIN STYLE */
+        body {
+            background: black;
+            color: white;
+            font-family: Arial;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial Black', Arial, sans-serif;
         }
-        body {
-            background: #000000;
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        /* ================= PANEL LOGIN (TAMPILAN PERTAMA - SEMUA LAYAR) ================= */
         #login-screen {
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #000000 0%, #0a2463 100%);
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        /* Animasi hilang saat login benar */
-        #login-screen.hide {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
         }
         .login-box {
-            background-color: #121212;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0, 200, 255, 0.5);
-            border: 2px solid #00c8ff;
+            background: #222;
+            padding: 30px;
+            border-radius: 10px;
             text-align: center;
         }
-        .login-title {
-            color: #00c8ff;
-            font-size: 28px;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px rgba(0, 200, 255, 0.8);
-        }
-        .login-form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .login-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #00c8ff;
-            font-size: 16px;
-        }
-        .login-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #00c8ff;
-            background-color: #1a1a1a;
-            color: #fff;
-            border-radius: 10px;
-            font-size: 16px;
-            outline: none;
-        }
-        .login-input::placeholder {
-            color: #888888;
-        }
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: #00c8ff;
-            color: #000;
+        input {
+            width: 200px;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
             border: none;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
+        }
+        button {
+            width: 220px;
+            padding: 10px;
+            background: purple;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-        .login-btn:hover {
-            background-color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
-        }
-        .login-note {
-            margin-top: 25px;
-            font-size: 12px;
-            color: #888888;
-        }
-        .error-msg {
-            color: #ff4b5c;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
         }
 
-        /* ================= HALAMAN UTAMA (SETELAH LOGIN BENAR) ================= */
-        #main-screen {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-        /* Tampilkan dengan animasi */
-        #main-screen.show {
-            display: block;
-            opacity: 1;
-        }
-
-        /* LOGO PENGEMBANG (HANYA MUNCUL SETELAH LOGIN) */
-        .dev-logo {
+        /* LOGO FLOATING - TETAP ADA */
+        #dev-logo {
             position: fixed;
             top: 20px;
             left: 20px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        /* Muncul dengan animasi masuk dari kiri */
-        .dev-logo.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .dev-logo:hover {
-            transform: scale(1.05);
-        }
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background-color: #00c8ff;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            color: #000;
-            font-weight: 900;
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.8);
-        }
-        .logo-text {
-            margin-left: 15px;
-            font-size: 18px;
-            color: #00c8ff;
-            text-shadow: 0 0 10px rgba(0, 200, 255, 0.8);
-        }
-        /* MENU DROPDOWN LOGO */
-        .dev-menu {
+            z-index: 999999; /* Nilai z-index sangat tinggi agar selalu di atas */
             display: none;
-            position: absolute;
-            top: 80px;
-            left: 0;
-            background-color: #121212;
-            border-radius: 10px;
-            padding: 15px;
-            width: 200px;
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
-            border: 1px solid #00c8ff;
         }
-        .dev-menu.active {
-            display: block;
-        }
-        .menu-option {
-            padding: 10px;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 5px;
-            transition: background-color 0.3s;
-        }
-        .menu-option:hover {
-            background-color: #00c8ff;
-            color: #000;
-        }
-        .menu-option:last-child {
-            margin-bottom: 0;
-        }
-
-        /* PANEL FITUR UTAMA */
-        .feature-panel {
-            margin-left: 100px;
-            padding-top: 30px;
-        }
-        .panel-title {
-            color: #00c8ff;
-            font-size: 26px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #00c8ff;
-            padding-bottom: 10px;
-            max-width: 800px;
-        }
-        .feature-card {
-            background-color: #121212;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            max-width: 800px;
-            box-shadow: 0 0 25px rgba(0, 200, 255, 0.3);
-            border: 1px solid #00c8ff;
-        }
-        .feature-title {
-            color: #00c8ff;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #1a1a1a;
-            border-radius: 8px;
-        }
-        .setting-label {
-            font-size: 16px;
-            color: #fff;
-        }
-        .setting-toggle {
+        .logo-kecil {
             width: 50px;
-            height: 25px;
-            background-color: #333333;
-            border-radius: 25px;
-            position: relative;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .setting-toggle.active {
-            background-color: #00c8ff;
-        }
-        .toggle-dot {
-            width: 21px;
-            height: 21px;
-            background-color: #fff;
+            height: 50px;
             border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: left 0.3s;
-        }
-        .setting-toggle.active .toggle-dot {
-            left: 27px;
-        }
-        .range-slider {
-            width: 150px;
-            height: 6px;
-            background-color: #333333;
-            border-radius: 3px;
-            outline: none;
-        }
-        .range-slider::-webkit-slider-thumb {
-            width: 18px;
-            height: 18px;
-            background-color: #00c8ff;
-            border-radius: 50%;
+            background-image: url('https://cdn.discordapp.com/attachments/100000000000000000/120000000000000000/avatar.png');
+            background-size: cover;
+            border: 2px solid purple;
             cursor: pointer;
+            box-shadow: 0 0 15px purple;
         }
-        .slider-value {
-            color: #00c8ff;
-            font-size: 14px;
-            margin-left: 10px;
+        .menu-dropdown {
+            display: none;
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            box-shadow: 0 0 10px black;
+        }
+        .menu-dropdown a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 5px 0;
+        }
+        .menu-dropdown a:hover {
+            color: purple;
         }
 
-        /* TOMBOL SIMPAN */
-        .save-btn {
-            background-color: #00c8ff;
-            color: #000;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
+        /* HALAMAN UTAMA */
+        #main-screen {
+            padding-top: 100px;
+            padding-left: 80px;
+            display: none;
         }
-        .save-btn:hover {
-            background-color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
-        }
-
-        /* CATATAN SIMULASI */
-        .simulation-note {
-            max-width: 800px;
-            padding: 15px;
-            background-color: rgba(0, 200, 255, 0.1);
+        .fitur {
+            background: #222;
+            padding: 20px;
             border-radius: 10px;
-            border: 1px dashed #00c8ff;
-            font-size: 14px;
-            color: #888888;
-            margin-top: 20px;
+            max-width: 300px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- ================= PANEL LOGIN (TAMPILAN PERTAMA) ================= -->
+    <!-- ================= PANEL LOGIN ================= -->
     <div id="login-screen">
         <div class="login-box">
-            <div class="login-title">PANEL FF DEV</div>
-            <div class="login-form-group">
-                <label class="login-label">Username</label>
-                <input type="text" id="input-user" class="login-input" placeholder="Masukkan Username">
-            </div>
-            <div class="login-form-group">
-                <label class="login-label">Password</label>
-                <input type="password" id="input-pass" class="login-input" placeholder="Masukkan Password">
-            </div>
-            <div class="error-msg" id="error-msg">Username atau Password salah!</div>
-            <button class="login-btn" onclick="validateLogin()">MASUK</button>
-            <div class="login-note">
-                Username valid: DEVFF<br>
-                Password valid: DEV12345
-            </div>
+            <h2>PANEL FF</h2>
+            <input type="text" id="user" placeholder="Username: DEVFF"><br>
+            <input type="password" id="pass" placeholder="Password: DEV12345"><br>
+            <button onclick="cekLogin()">MASUK</button>
+            <p style="font-size: 12px; margin-top: 15px;">Setelah masuk, logo akan tetap ada bahkan jika buka FF</p>
         </div>
     </div>
 
-    <!-- ================= HALAMAN UTAMA (SETELAH LOGIN BENAR) ================= -->
-    <div id="main-screen">
-        <!-- LOGO PENGEMBANG (AWALNYA TIDAK MUNCUL) -->
-        <div class="dev-logo" id="dev-logo">
-            <div class="logo-icon">DEV</div>
-            <div class="logo-text">FF DEVELOPER</div>
-            <!-- MENU DROPDOWN LOGO -->
-            <div class="dev-menu" id="dev-menu">
-                <div class="menu-option" onclick="showAutoHeadshot()">Auto Headshot</div>
-                <div class="menu-option" onclick="showAntiBan()">Anti Ban System</div>
-                <div class="menu-option" onclick="showEsp()">Mode ESP</div>
-                <div class="menu-option" onclick="logoutPanel()">Keluar Panel</div>
-            </div>
+    <!-- ================= LOGO FLOATING ================= -->
+    <div id="dev-logo">
+        <div class="logo-kecil" onclick="toggleMenu()"></div>
+        <div class="menu-dropdown" id="menu">
+            <a href="#" onclick="showHS()">Auto Headshot</a>
+            <a href="#" onclick="showAB()">Anti Ban</a>
+            <a href="#" onclick="minimizePanel()">Sembunyikan Panel</a>
+            <a href="#" onclick="logout()">Keluar</a>
         </div>
+    </div>
 
-        <!-- PANEL FITUR -->
-        <div class="feature-panel">
-            <div class="panel-title">PANEL FITUR DEVELOPER</div>
+    <!-- ================= HALAMAN UTAMA ================= -->
+    <div id="main-screen">
+        <h1>PANEL FITUR</h1>
+        <div id="fitur-hs" class="fitur">
+            <h3>AUTO HEADSHOT</h3>
+            <p>Keakuratan: 95%</p>
+            <p>Jangkauan: 100m</p>
+            <button>Simpan Setting</button>
+        </div>
+        <div id="fitur-ab" class="fitur" style="display: none;">
+            <h3>ANTI BAN SYSTEM</h3>
+            <p>Mode Proteksi: Aktif</p>
+            <p>Signature: Terbaru</p>
+            <button>Aktifkan Proteksi</button>
+        </div>
+    </div>
 
-            <!-- FITUR AUTO HEADSHOT -->
-            <div class="feature-card" id="auto-headshot">
-                <div class="feature-title">AUTO HEADSHOT SETTING</div>
-                <div class="setting-item">
-                    <span class="setting-label">Aktifkan Fitur</span>
-                    <div class="setting-toggle" id="toggle-hs" onclick="toggleSetting('hs')">
-                        <div class="toggle-dot"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <span class="setting-label">Keakuratan</span>
-                    <div style="display: flex; align-items: center;">
-                        <input type="range" min="70" max="100" value="95" class="range-slider" id="acc-slider" oninput="updateSlider('acc', this.value)">
-                        <span class="slider-value" id="acc-value">95%</span>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <span class="setting-label">Jangkauan Tembak</span>
-                    <div style="display: flex; align-items: center;">
-                        <input type="range" min="20" max="150" value="100" class="range-slider" id="range-slider" oninput="updateSlider('range', this.value)">
-                        <span class="slider-value" id="range-value">100m</span>
-                    </div>
-                </div>
-                <button class="save-btn" onclick="saveSetting('hs')">SIMPAN SETTING</button>
-            </div>
+    <script>
+        // Fungsi Login
+        function cekLogin() {
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
 
-            <!-- FITUR ANTI BAN -->
-            <div class="feature-card" id="anti-ban" style="display: none;">
-                <div class="feature-title">ANTI BAN SYSTEM</div>
-                <div class="setting-item">
-                    <span class="setting-label">Aktifkan Proteksi</span>
-                    <div class="setting-toggle" id="toggle-ab" onclick="toggleSetting('ab')">
-                        <div class="toggle-dot"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <span class="setting-label">Mode Proteksi</span>
-                    <div class="setting-toggle" id="toggle-mode" onclick="toggleSetting('mode')">
-                        <div class="toggle-dot"></div>
-                    </div>
-                </div>
-                <div class="setting-item">
-                    <span class="setting-label">Update Signature</span>
-                    <button class="save-btn" style="padding: 8px 15px; font-size: 14px;">UPDATE</button>
-                </div>
-                <button class="save-btn" onclick="saveSetting('ab')">AKTIFKAN PROTEKSI</button>
-            </div>
+            if (user === "DEVFF" && pass === "DEV12345") {
+                // Sembunyikan Login, Tampilkan Logo & Halaman
+                document.getElementById('login-screen').style.display = "none";
+                document.getElementById('dev-logo').style.display = "block";
+                document.getElementById('main-screen').style.display = "block";
 
-            <!-- FITUR MODE ESP -->
-            <div class="feature-card" id="mode-esp" style="display: none;">
-                <div class="feature-title">MODE ESP SETTING</div>
-                <div class="setting-item">
-                    <span class="setting-label">Aktifkan ESP</span>
-                    <div class="setting-toggle" id="toggle-esp" onclick="toggleSetting('esp')">
-                        <div class="toggle-dot"></div>
-                    </div
-                
+                // Pemberitahuan untuk izin overlay (jika dibuat jadi APK)
+                alert("Logo akan tetap muncul! Jika dibuat jadi aplikasi, pastikan izin 'Tampil di atas aplikasi lain' diaktifkan.");
+            } else {
+                alert("Username/Password Salah!");
+            }
+        }
+
+        // Fungsi Toggle Menu
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        // Fungsi Tampil Fitur
+        function showHS() {
+            document.getElementById('fitur-hs').style.display = "block";
+            document.getElementById('fitur-ab').style.display = "none";
+            document.getElementById('main-screen').style.display = "block";
+            toggleMenu();
+        }
+        function showAB() {
+            document.getElementById('fitur-hs').style.display = "none";
+            document.getElementById('fitur-ab').style.display = "block";
+            document.getElementById('main-screen').style.display = "block";
+            toggleMenu();
+        }
+
+        // Fungsi Sembunyikan Panel (Logo Tetap Ada)
+        function minimizePanel() {
+            document.getElementById('main-screen').style.display = "none";
+            toggleMenu();
+        }
+
+        // Fungsi Logout
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
