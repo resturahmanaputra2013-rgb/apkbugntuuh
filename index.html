@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APK BUG NTUU - Versi Hibur</title>
+    <!-- Tambahan untuk tema aplikasi -->
+    <meta name="theme-color" content="#7e22ce">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
+        body {
+            background-color: #000000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        /* Header Sesuai Contoh */
+        .header {
+            background-color: #7e22ce;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        .header-title {
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+        .buy-btn {
+            background-color: #ffffff;
+            color: #7e22ce;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .buy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Container Umum Sesuai Ukuran Contoh */
+        .page-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 70px);
+            padding: 20px;
+            position: relative;
+        }
+        .content-wrapper {
+            background-color: #1a1a1a;
+            width: 100%;
+            max-width: 380px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.8), 0 0 15px rgba(168, 85, 247, 0.5) inset;
+            border: 2px solid #a855f7;
+        }
+
+        /* Bagian Login */
+        #login-page { display: flex; }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a855f7;
+            font-size: 18px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #a855f7;
+            background-color: #2d2d2d;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        .form-input::placeholder { color: #94a3b8; }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #7e22ce;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .login-btn:hover {
+            background-color: #a855f7;
+        }
+
+        /* Bagian Pemeriksaan Identitas */
+        #verification-page { display: none; }
+        .verification-header {
+            color: #a855f7;
+            font-size: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #2d2d2d;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #a855f7;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background-color: #a855f7;
+            animation: fillProgress 4s linear forwards;
+        }
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .verification-step {
+            color: #fff;
+            font-size: 14px;
+            margin: 10px 0;
+            padding-left: 15px;
+            position: relative;
+        }
+        .verification-step::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #a855f7;
+        }
+        .verification-step.active { color: #a855f7; }
+        .verification-step.active::before { content: '✓'; }
+
+        /* Bagian Panel Bug */
+        #main-page { display: none; }
+        .target-label {
+            display: block;
+            margin-bottom: 10px;
+            color: #a855f7;
+            font-size: 18px;
+            text-align: left;
+        }
+        .target-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #a855f7;
+            background-color: #2d2d2d;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .target-input::placeholder { color: #94a3b8; }
+        .bug-btn-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .bug-btn {
+            width: 48%;
+            padding: 14px 0;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .bug-btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-andro { background-color: #6d28d9; }
+        .btn-ip { background-color: #5b21b6; }
+        .btn-crash { background-color: #4c1d95; }
+        .btn-nonstop { background-color: #4338ca; }
+        .loading-text {
+            color: #a855f7;
+            font-size: 14px;
+            margin: 15px 0;
+            text-align: center;
+            display: none;
+        }
+        .note-box {
+            margin-top: 15px;
+            padding: 15px;
+            border: 2px dashed #a855f7;
+            background-color: #2d2d2d;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #ffffff;
+        }
+
+        /* Informasi Versi */
+        .app-version {
+            text-align: center;
+            margin-top: 20px;
+            color: #a855f7;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Sesuai Contoh -->
+    <div class="header">
+        <div class="header-title">APK BUG<br>NTUU</div>
+        <button class="buy-btn" onclick="showBuyInfo()">BELI APK FULL VERSI</button>
+    </div>
+
+    <!-- Halaman Login -->
+    <div id="login-page" class="page-container">
+        <div class="content-wrapper">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Masukkan Username">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Masukkan Password">
+            </div>
+            <button class="login-btn" onclick="simulateLogin()">LOGIN</button>
+            <!-- Informasi Versi -->
+            <div class="app-version">APK BUG NTUU | Versi 1.0.0</div>
+        </div>
+    </div>
+
+    <!-- Halaman Pemeriksaan Identitas -->
+    <div id="verification-page" class="page-container">
+        <div class="content-wrapper">
+            <h3 class="verification-header">PEMERIKSAAN IDENTITAS</h3>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="verification-step" id="step1">Memvalidasi kredensial...</div>
+            <div class="verification-step" id="step2">Memeriksa izin sistem...</div>
+            <div class="verification-step" id="step3">Memverifikasi data...</div>
+            <div class="verification-step" id="step4">Mengenkripsi sesi...</div>
+        </div>
+    </div>
+
+    <!-- Halaman Panel Bug -->
+    <div id="main-page" class="page-container">
+        <div class="content-wrapper">
+            <label class="target-label">Masukkan Nomor/Target</label>
+            <input type="text" id="nomor" class="target-input" placeholder="Contoh: 0812xxxxxx">
+            
+            <div class="bug-btn-row">
+                <button class="bug-btn btn-andro" onclick="simulateBug('ANDRO')">BUG ANDRO</button>
+                <button class="bug-btn btn-ip" onclick="simulateBug('IP')">BUG IP</button>
+            </div>
+            <div class="bug-btn-row">
+                <button class="bug-btn btn-crash" onclick="simulateBug('CRASH')">BUG CRASH</button>
+                <button class="bug-btn btn-nonstop" onclick="simulateBug('NONSTOP')">BUG NONSTOP 5H</button>
+            </div>
+
+            <div class="loading-text" id="loading">Memproses permintaan... Harap tunggu...</div>
+
+            <div class="note-box">
+                NOTE : GUNAKAN DENGAN BIJAK<br>
+                WEB BUG NTUU INI CUMAN BOONGAN<br>
+                TIDAK ADA EFEK NYATA KARENA<br>
+                TIDAK ADA FUNGSI YANG MERUSAK
+            </div>
+            <!-- Informasi Versi -->
+            <div class="app-version">© 2024 | Versi 1.0.0</div>
+        </div>
+    </div>
+
+    <script>
+        // Username & Password Valid
+        const VALID_USER = 'NTUV1';
+        const VALID_PASS = 'Ntuuuv1';
+
+        // Fungsi Login
+        function simulateLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === VALID_USER && password === VALID_PASS) {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('verification-page').style.display = 'flex';
+                
+                // Langkah-langkah pemeriksaan otomatis
+                setTimeout(() => document.getElementById('step1').classList.add('active'), 700);
+                setTimeout(() => document.getElementById('step2').classList.add('active'), 1600);
+                setTimeout(() => document.getElementById('step3').classList.add('active'), 2500);
+                setTimeout(() => {
+                    document.getElementById('step4').classList.add('active');
+                    // Pindah ke panel bug secara otomatis
+                    setTimeout(() => {
+                        document.getElementById('verification-page').style.display = 'none';
+                        document.getElementById('main-page').style.display = 'flex';
+                    }, 800);
+                }, 3500);
+            } else {
+                alert('Username atau password salah! Coba lagi ya 😉');
+            }
+        }
+
+        // Fungsi Simulasi Bug
+        function simulateBug(type) {
+            const nomor = document.getElementById('nomor').value;
+            const loading = document.getElementById('loading');
+            
+            if (!nomor) {
+                alert('Masukkan nomor/target dulu ya!');
+                return;
+            }
+
+            loading.style.display = 'block';
+            setTimeout(() => {
+                loading.style.display = 'none';
+                alert(`Simulasi BUG ${type} selesai!\nTidak ada efek nyata pada target tersebut 😉`);
+            }, 2000);
+        }
+
+        // Fungsi Info Pembelian
+        function showBuyInfo() {
+            alert('Informasi Pembelian APK Full Versi:\n- Hubungi Admin di WA: 08xxxxxxxxx\n- Harga: Rp. XXX.XXX\n- Catatan: Ini hanya simulasi ya!');
+        }
+    </script>
+</body>
+  </html>
+  
