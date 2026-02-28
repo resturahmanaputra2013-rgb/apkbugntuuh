@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APK BUG NTUU - Versi Hibur</title>
-    <!-- Tambahan untuk tema aplikasi -->
-    <meta name="theme-color" content="#7e22ce">
+    <title>PANEL FF DEVELOPER - SIMULASI</title>
+    <meta name="theme-color" content="#00c8ff">
     <style>
         * {
             margin: 0;
@@ -14,331 +13,398 @@
             font-family: 'Arial Black', Arial, sans-serif;
         }
         body {
-            background-color: #000000;
+            background: #000000;
             color: #fff;
             overflow-x: hidden;
         }
-        /* Header Sesuai Contoh */
-        .header {
-            background-color: #7e22ce;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-        }
-        .header-title {
-            font-size: 28px;
-            font-weight: 900;
-            line-height: 1.2;
-            color: #ffffff;
-        }
-        .buy-btn {
-            background-color: #ffffff;
-            color: #7e22ce;
-            padding: 8px 20px;
-            border: none;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .buy-btn:hover {
-            transform: scale(1.05);
-        }
 
-        /* Container Umum Sesuai Ukuran Contoh */
-        .page-container {
+        /* ================= PANEL LOGIN (TAMPILAN PERTAMA - SEMUA LAYAR) ================= */
+        #login-screen {
+            width: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 70px);
-            padding: 20px;
-            position: relative;
+            background: linear-gradient(135deg, #000000 0%, #0a2463 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
-        .content-wrapper {
-            background-color: #1a1a1a;
+        /* Animasi hilang saat login benar */
+        #login-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .login-box {
+            background-color: #121212;
             width: 100%;
-            max-width: 380px;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.8), 0 0 15px rgba(168, 85, 247, 0.5) inset;
-            border: 2px solid #a855f7;
+            max-width: 400px;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 200, 255, 0.5);
+            border: 2px solid #00c8ff;
+            text-align: center;
         }
-
-        /* Bagian Login */
-        #login-page { display: flex; }
-        .form-group {
+        .login-title {
+            color: #00c8ff;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.8);
+        }
+        .login-form-group {
             margin-bottom: 20px;
             text-align: left;
         }
-        .form-label {
+        .login-label {
             display: block;
             margin-bottom: 8px;
-            color: #a855f7;
-            font-size: 18px;
+            color: #00c8ff;
+            font-size: 16px;
         }
-        .form-input {
+        .login-input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #a855f7;
-            background-color: #2d2d2d;
+            padding: 12px 15px;
+            border: 2px solid #00c8ff;
+            background-color: #1a1a1a;
             color: #fff;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 16px;
             outline: none;
         }
-        .form-input::placeholder { color: #94a3b8; }
+        .login-input::placeholder {
+            color: #888888;
+        }
         .login-btn {
             width: 100%;
-            padding: 12px;
-            background-color: #7e22ce;
-            color: #ffffff;
+            padding: 14px;
+            background-color: #00c8ff;
+            color: #000;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            margin-top: 10px;
         }
         .login-btn:hover {
-            background-color: #a855f7;
+            background-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
         }
-
-        /* Bagian Pemeriksaan Identitas */
-        #verification-page { display: none; }
-        .verification-header {
-            color: #a855f7;
-            font-size: 20px;
-            margin-bottom: 25px;
-            text-align: center;
+        .login-note {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #888888;
         }
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background-color: #2d2d2d;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #a855f7;
-            overflow: hidden;
-        }
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background-color: #a855f7;
-            animation: fillProgress 4s linear forwards;
-        }
-        @keyframes fillProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-        .verification-step {
-            color: #fff;
+        .error-msg {
+            color: #ff4b5c;
             font-size: 14px;
-            margin: 10px 0;
-            padding-left: 15px;
-            position: relative;
+            margin-top: 10px;
+            display: none;
         }
-        .verification-step::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: #a855f7;
-        }
-        .verification-step.active { color: #a855f7; }
-        .verification-step.active::before { content: '✓'; }
 
-        /* Bagian Panel Bug */
-        #main-page { display: none; }
-        .target-label {
-            display: block;
-            margin-bottom: 10px;
-            color: #a855f7;
-            font-size: 18px;
-            text-align: left;
-        }
-        .target-input {
+        /* ================= HALAMAN UTAMA (SETELAH LOGIN BENAR) ================= */
+        #main-screen {
+            display: none;
             width: 100%;
-            padding: 12px;
-            border: 2px solid #a855f7;
-            background-color: #2d2d2d;
+            min-height: 100vh;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        /* Tampilkan dengan animasi */
+        #main-screen.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* LOGO PENGEMBANG (HANYA MUNCUL SETELAH LOGIN) */
+        .dev-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        /* Muncul dengan animasi masuk dari kiri */
+        .dev-logo.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .dev-logo:hover {
+            transform: scale(1.05);
+        }
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #00c8ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.8);
+        }
+        .logo-text {
+            margin-left: 15px;
+            font-size: 18px;
+            color: #00c8ff;
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.8);
+        }
+        /* MENU DROPDOWN LOGO */
+        .dev-menu {
+            display: none;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            background-color: #121212;
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
+            border: 1px solid #00c8ff;
+        }
+        .dev-menu.active {
+            display: block;
+        }
+        .menu-option {
+            padding: 10px;
             color: #fff;
             border-radius: 5px;
-            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            transition: background-color 0.3s;
+        }
+        .menu-option:hover {
+            background-color: #00c8ff;
+            color: #000;
+        }
+        .menu-option:last-child {
+            margin-bottom: 0;
+        }
+
+        /* PANEL FITUR UTAMA */
+        .feature-panel {
+            margin-left: 100px;
+            padding-top: 30px;
+        }
+        .panel-title {
+            color: #00c8ff;
+            font-size: 26px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00c8ff;
+            padding-bottom: 10px;
+            max-width: 800px;
+        }
+        .feature-card {
+            background-color: #121212;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            max-width: 800px;
+            box-shadow: 0 0 25px rgba(0, 200, 255, 0.3);
+            border: 1px solid #00c8ff;
+        }
+        .feature-title {
+            color: #00c8ff;
+            font-size: 20px;
             margin-bottom: 20px;
         }
-        .target-input::placeholder { color: #94a3b8; }
-        .bug-btn-row {
+        .setting-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
         }
-        .bug-btn {
-            width: 48%;
-            padding: 14px 0;
+        .setting-label {
+            font-size: 16px;
+            color: #fff;
+        }
+        .setting-toggle {
+            width: 50px;
+            height: 25px;
+            background-color: #333333;
+            border-radius: 25px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .setting-toggle.active {
+            background-color: #00c8ff;
+        }
+        .toggle-dot {
+            width: 21px;
+            height: 21px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s;
+        }
+        .setting-toggle.active .toggle-dot {
+            left: 27px;
+        }
+        .range-slider {
+            width: 150px;
+            height: 6px;
+            background-color: #333333;
+            border-radius: 3px;
+            outline: none;
+        }
+        .range-slider::-webkit-slider-thumb {
+            width: 18px;
+            height: 18px;
+            background-color: #00c8ff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .slider-value {
+            color: #00c8ff;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        /* TOMBOL SIMPAN */
+        .save-btn {
+            background-color: #00c8ff;
+            color: #000;
             border: none;
-            border-radius: 5px;
-            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s;
+            margin-top: 10px;
         }
-        .bug-btn:hover {
-            transform: translateY(-2px);
-        }
-        .btn-andro { background-color: #6d28d9; }
-        .btn-ip { background-color: #5b21b6; }
-        .btn-crash { background-color: #4c1d95; }
-        .btn-nonstop { background-color: #4338ca; }
-        .loading-text {
-            color: #a855f7;
-            font-size: 14px;
-            margin: 15px 0;
-            text-align: center;
-            display: none;
-        }
-        .note-box {
-            margin-top: 15px;
-            padding: 15px;
-            border: 2px dashed #a855f7;
-            background-color: #2d2d2d;
-            text-align: center;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #ffffff;
+        .save-btn:hover {
+            background-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
         }
 
-        /* Informasi Versi */
-        .app-version {
-            text-align: center;
+        /* CATATAN SIMULASI */
+        .simulation-note {
+            max-width: 800px;
+            padding: 15px;
+            background-color: rgba(0, 200, 255, 0.1);
+            border-radius: 10px;
+            border: 1px dashed #00c8ff;
+            font-size: 14px;
+            color: #888888;
             margin-top: 20px;
-            color: #a855f7;
-            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <!-- Header Sesuai Contoh -->
-    <div class="header">
-        <div class="header-title">APK BUG<br>NTUU</div>
-        <button class="buy-btn" onclick="showBuyInfo()">BELI APK FULL VERSI</button>
-    </div>
-
-    <!-- Halaman Login -->
-    <div id="login-page" class="page-container">
-        <div class="content-wrapper">
-            <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" id="username" class="form-input" placeholder="Masukkan Username">
+    <!-- ================= PANEL LOGIN (TAMPILAN PERTAMA) ================= -->
+    <div id="login-screen">
+        <div class="login-box">
+            <div class="login-title">PANEL FF DEV</div>
+            <div class="login-form-group">
+                <label class="login-label">Username</label>
+                <input type="text" id="input-user" class="login-input" placeholder="Masukkan Username">
             </div>
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" id="password" class="form-input" placeholder="Masukkan Password">
+            <div class="login-form-group">
+                <label class="login-label">Password</label>
+                <input type="password" id="input-pass" class="login-input" placeholder="Masukkan Password">
             </div>
-            <button class="login-btn" onclick="simulateLogin()">LOGIN</button>
-            <!-- Informasi Versi -->
-            <div class="app-version">APK BUG NTUU | Versi 1.0.0</div>
+            <div class="error-msg" id="error-msg">Username atau Password salah!</div>
+            <button class="login-btn" onclick="validateLogin()">MASUK</button>
+            <div class="login-note">
+                Username valid: DEVFF<br>
+                Password valid: DEV12345
+            </div>
         </div>
     </div>
 
-    <!-- Halaman Pemeriksaan Identitas -->
-    <div id="verification-page" class="page-container">
-        <div class="content-wrapper">
-            <h3 class="verification-header">PEMERIKSAAN IDENTITAS</h3>
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
+    <!-- ================= HALAMAN UTAMA (SETELAH LOGIN BENAR) ================= -->
+    <div id="main-screen">
+        <!-- LOGO PENGEMBANG (AWALNYA TIDAK MUNCUL) -->
+        <div class="dev-logo" id="dev-logo">
+            <div class="logo-icon">DEV</div>
+            <div class="logo-text">FF DEVELOPER</div>
+            <!-- MENU DROPDOWN LOGO -->
+            <div class="dev-menu" id="dev-menu">
+                <div class="menu-option" onclick="showAutoHeadshot()">Auto Headshot</div>
+                <div class="menu-option" onclick="showAntiBan()">Anti Ban System</div>
+                <div class="menu-option" onclick="showEsp()">Mode ESP</div>
+                <div class="menu-option" onclick="logoutPanel()">Keluar Panel</div>
             </div>
-            <div class="verification-step" id="step1">Memvalidasi kredensial...</div>
-            <div class="verification-step" id="step2">Memeriksa izin sistem...</div>
-            <div class="verification-step" id="step3">Memverifikasi data...</div>
-            <div class="verification-step" id="step4">Mengenkripsi sesi...</div>
         </div>
-    </div>
 
-    <!-- Halaman Panel Bug -->
-    <div id="main-page" class="page-container">
-        <div class="content-wrapper">
-            <label class="target-label">Masukkan Nomor/Target</label>
-            <input type="text" id="nomor" class="target-input" placeholder="Contoh: 0812xxxxxx">
-            
-            <div class="bug-btn-row">
-                <button class="bug-btn btn-andro" onclick="simulateBug('ANDRO')">BUG ANDRO</button>
-                <button class="bug-btn btn-ip" onclick="simulateBug('IP')">BUG IP</button>
+        <!-- PANEL FITUR -->
+        <div class="feature-panel">
+            <div class="panel-title">PANEL FITUR DEVELOPER</div>
+
+            <!-- FITUR AUTO HEADSHOT -->
+            <div class="feature-card" id="auto-headshot">
+                <div class="feature-title">AUTO HEADSHOT SETTING</div>
+                <div class="setting-item">
+                    <span class="setting-label">Aktifkan Fitur</span>
+                    <div class="setting-toggle" id="toggle-hs" onclick="toggleSetting('hs')">
+                        <div class="toggle-dot"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Keakuratan</span>
+                    <div style="display: flex; align-items: center;">
+                        <input type="range" min="70" max="100" value="95" class="range-slider" id="acc-slider" oninput="updateSlider('acc', this.value)">
+                        <span class="slider-value" id="acc-value">95%</span>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Jangkauan Tembak</span>
+                    <div style="display: flex; align-items: center;">
+                        <input type="range" min="20" max="150" value="100" class="range-slider" id="range-slider" oninput="updateSlider('range', this.value)">
+                        <span class="slider-value" id="range-value">100m</span>
+                    </div>
+                </div>
+                <button class="save-btn" onclick="saveSetting('hs')">SIMPAN SETTING</button>
             </div>
-            <div class="bug-btn-row">
-                <button class="bug-btn btn-crash" onclick="simulateBug('CRASH')">BUG CRASH</button>
-                <button class="bug-btn btn-nonstop" onclick="simulateBug('NONSTOP')">BUG NONSTOP 5H</button>
+
+            <!-- FITUR ANTI BAN -->
+            <div class="feature-card" id="anti-ban" style="display: none;">
+                <div class="feature-title">ANTI BAN SYSTEM</div>
+                <div class="setting-item">
+                    <span class="setting-label">Aktifkan Proteksi</span>
+                    <div class="setting-toggle" id="toggle-ab" onclick="toggleSetting('ab')">
+                        <div class="toggle-dot"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Mode Proteksi</span>
+                    <div class="setting-toggle" id="toggle-mode" onclick="toggleSetting('mode')">
+                        <div class="toggle-dot"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Update Signature</span>
+                    <button class="save-btn" style="padding: 8px 15px; font-size: 14px;">UPDATE</button>
+                </div>
+                <button class="save-btn" onclick="saveSetting('ab')">AKTIFKAN PROTEKSI</button>
             </div>
 
-            <div class="loading-text" id="loading">Memproses permintaan... Harap tunggu...</div>
-
-            <div class="note-box">
-                NOTE : GUNAKAN DENGAN BIJAK<br>
-                WEB BUG NTUU INI CUMAN BOONGAN<br>
-                TIDAK ADA EFEK NYATA KARENA<br>
-                TIDAK ADA FUNGSI YANG MERUSAK
-            </div>
-            <!-- Informasi Versi -->
-            <div class="app-version">© 2024 | Versi 1.0.0</div>
-        </div>
-    </div>
-
-    <script>
-        // Username & Password Valid
-        const VALID_USER = 'NTUV1';
-        const VALID_PASS = 'Ntuuuv1';
-
-        // Fungsi Login
-        function simulateLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username === VALID_USER && password === VALID_PASS) {
-                document.getElementById('login-page').style.display = 'none';
-                document.getElementById('verification-page').style.display = 'flex';
+            <!-- FITUR MODE ESP -->
+            <div class="feature-card" id="mode-esp" style="display: none;">
+                <div class="feature-title">MODE ESP SETTING</div>
+                <div class="setting-item">
+                    <span class="setting-label">Aktifkan ESP</span>
+                    <div class="setting-toggle" id="toggle-esp" onclick="toggleSetting('esp')">
+                        <div class="toggle-dot"></div>
+                    </div
                 
-                // Langkah-langkah pemeriksaan otomatis
-                setTimeout(() => document.getElementById('step1').classList.add('active'), 700);
-                setTimeout(() => document.getElementById('step2').classList.add('active'), 1600);
-                setTimeout(() => document.getElementById('step3').classList.add('active'), 2500);
-                setTimeout(() => {
-                    document.getElementById('step4').classList.add('active');
-                    // Pindah ke panel bug secara otomatis
-                    setTimeout(() => {
-                        document.getElementById('verification-page').style.display = 'none';
-                        document.getElementById('main-page').style.display = 'flex';
-                    }, 800);
-                }, 3500);
-            } else {
-                alert('Username atau password salah! Coba lagi ya 😉');
-            }
-        }
-
-        // Fungsi Simulasi Bug
-        function simulateBug(type) {
-            const nomor = document.getElementById('nomor').value;
-            const loading = document.getElementById('loading');
-            
-            if (!nomor) {
-                alert('Masukkan nomor/target dulu ya!');
-                return;
-            }
-
-            loading.style.display = 'block';
-            setTimeout(() => {
-                loading.style.display = 'none';
-                alert(`Simulasi BUG ${type} selesai!\nTidak ada efek nyata pada target tersebut 😉`);
-            }, 2000);
-        }
-
-        // Fungsi Info Pembelian
-        function showBuyInfo() {
-            alert('Informasi Pembelian APK Full Versi:\n- Hubungi Admin di WA: 08xxxxxxxxx\n- Harga: Rp. XXX.XXX\n- Catatan: Ini hanya simulasi ya!');
-        }
-    </script>
-</body>
-  </html>
-  
